@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Hybrid rules-plus-vector-search system that returns ranked, explainable comparable titles on demand instead of overnight." />
+  <title>AI Comparable Title Selection | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 03 · AI / ML · Vector search</p>
+          <h1>AI Comparable Title Selection</h1>
+          <p class="case-deck">A hybrid system that layers vector search on top of hard business-rule filters to return ranked, explainable comparable titles on demand. It works alongside a third-party supply chain planning platform.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Data / ML engineer &amp; solution designer</strong></div>
+          <div><span>Scale</span><strong>Batch UPC/ISBN lookups, on demand</strong></div>
+          <div><span>Status</span><strong>Core system built and demoed to marketing; conference session proposal submitted.</strong></div>
+          <div><span>Stack</span><strong>Databricks · Databricks SQL · Vector Search · Unity Catalog · Python</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>The comps drove real decisions. The logic was a black box.</h2>
+            <p>In publishing, a <em>comp</em> is a comparable title whose past performance is used to plan a new one. Comps drive both marketing and supply chain decisions.</p>
+            <p>In the existing planning platform, comp selection ran on overnight batches, the selection logic was opaque, business users needed IT to make overrides, and licensing cost was significant.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Designed a hybrid architecture. SQL hard filters enforce the non-negotiable business rules first (channel routing, key attribute, budget category, merchandising subject), then vector search matches on theme, tone, audience, and other qualitative attributes.</li>
+              <li>Built a comp-lookup tool that takes batches of UPC/ISBN codes and returns ranked comparable titles, each with an explanation of the match.</li>
+              <li>Encoded channel integrity (a retailer-exclusive title only compares to titles from the same channel) and a rule that a title is never its own comp, which matters for re-releases that share a UPC.</li>
+              <li>Presented the system to the marketing team and used their “not another tool” feedback to steer delivery toward automated outputs inside their existing workflow.</li>
+              <li>Positioned the work as complementary to the existing platform rather than a replacement, and submitted a 40-minute breakout proposal to a major data &amp; AI conference.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">Batch of UPC / ISBN codes</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">SQL hard filters<br><small>Channel · key attribute · budget category · subject</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Vector Search<br><small>Theme · tone · audience</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">Ranking + match explanation</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Ranked comps with reasons<br><small>→ planner workflow / planning platform</small></div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why filters before vectors?</h3><p>Business rules that can’t be broken shouldn’t be left to probability. Hard filters guarantee eligibility, and vector similarity only ranks within the safe set.</p></div>
+              <div class="decision"><h3>Why explain every match?</h3><p>Planners won’t trust a comp they can’t reason about. A reason on every result builds confidence and makes overrides informed instead of arbitrary.</p></div>
+              <div class="decision"><h3>Why complement instead of replace?</h3><p>Replacing a core planning platform is a multi-year conversation. Complementing it delivers value now and builds a path to lower licensing cost later.</p></div>
+              <div class="decision"><h3>Why automated outputs instead of a new UI?</h3><p>Users told me plainly they didn’t want another tool. Meeting them inside their existing workflow is what actually drives adoption.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>On demand</strong><span>instead of overnight batch</span></div>
+              <div><strong>Every comp</strong><span>comes with a reason</span></div>
+              <div><strong>No IT ticket</strong><span>needed for overrides</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Removes the overnight batch wait, so planners get comps when they need them.</li>
+              <li>Transparent selection logic builds trust with business users.</li>
+              <li>Business users can see and control comp choices themselves, which opens a path to lower licensing cost.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Add a 24-month sales and store-count history to the index with automated refresh, schedule a daily export to blob storage, and decide between an app upload interface and a fully automated feed into the planning platform.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="sales-datamart-explorer.html"><span>← Previous</span><strong>Enterprise Sales Datamart Explorer</strong></a>
+            <a href="sales-curve-planner.html"><span>Next →</span><strong>New Product Sales Curve Planner</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

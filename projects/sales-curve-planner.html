@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Automated 26- and 52-week launch curves with a governed curve editor, replacing a manual hours-to-days process." />
+  <title>New Product Sales Curve Planner | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 04 · Forecasting · Data app</p>
+          <h1>New Product Sales Curve Planner</h1>
+          <p class="case-deck">Automated 26- and 52-week sales curves for new product launches. A governed pipeline and curve editor feed demand forecasting and replaced a manual process that took hours to days.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Lead developer &amp; methodology designer</strong></div>
+          <div><span>Scale</span><strong>Three-chain proof of concept · 26- &amp; 52-week curves</strong></div>
+          <div><span>Status</span><strong>26-week curves user tested; 52-week seasonal design delivered; scaling next.</strong></div>
+          <div><span>Stack</span><strong>Databricks · PySpark · Delta Lake · Unity Catalog Volumes · Streamlit · Plotly · Azure Blob · Asset Bundles</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>A forecasting input that only got refreshed a few times a year.</h2>
+            <p>Sales curves describe how a new title’s sales spread across its first weeks on shelf, by retail chain and product segment. They feed demand forecasting directly.</p>
+            <p>The curves were built by hand. Each refresh took hours to days, so it only happened a few times a year, and adding finer subject-level segments wasn’t feasible manually.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Designed a statistical (deliberately not AI) method: pool POS units across qualifying titles per segment and week, normalize to the 26-week total, and use the median to limit bestseller outliers.</li>
+              <li>Built the 26-week pipeline to a Delta table with CSV exports to a Unity Catalog Volume, and fixed an off-by-one launch-week date bug.</li>
+              <li>Designed the 52-week calendar-seasonal curve: three build years, per-year normalization, recency weights of 0.5 / 0.3 / 0.2, the latest year held out for validation, and launch-spike trimming.</li>
+              <li>Built the Streamlit app: a curve editor with live charts and renormalization, a two-person approval flow for overrides, a flagged-curves page, and a forecast preview that handles uploads to the forecasting platform through Blob Storage.</li>
+              <li>Ran user testing and organized team coverage so the 52-week work kept moving while I was out.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">POS history<br><small>By chain × segment × launch week</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Qualifying-title selection</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Normalize + median pooling<br><small>PySpark</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Delta curve tables + CSV exports</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">Curve Editor<br><small>Live charts · two-person approval</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Blob Storage → demand forecasting platform</div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why statistics instead of AI?</h3><p>Planners need curves they can explain and defend. A transparent, pooled-median method is stable, auditable, and good enough to beat the manual baseline.</p></div>
+              <div class="decision"><h3>Why the median?</h3><p>A single breakout bestseller can drag a mean-based curve away from what a typical title does. The median keeps the shape representative.</p></div>
+              <div class="decision"><h3>Why recency weights and a holdout year?</h3><p>Recent years reflect current buying behavior better, and holding out the latest year means the curves get validated on data they never saw.</p></div>
+              <div class="decision"><h3>Why two-person approval?</h3><p>Manual overrides are where forecasting risk lives. A second approver adds governance without slowing the automated path.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>Hours → auto</strong><span>refresh time</span></div>
+              <div><strong>26 + 52</strong><span>week curves</span></div>
+              <div><strong>2-person</strong><span>override approval</span></div>
+            </div>
+            <ul class="did-list">
+              <li>A manual process that took hours to days is now an automated, repeatable pipeline that can refresh far more often.</li>
+              <li>Subject-level segmentation gives planners finer, more relevant curves.</li>
+              <li>Every manual override is reviewed before it reaches forecasting.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Validate the 52-week curves against holdout data, find the launch-spike decay point empirically, and extend beyond the three-chain proof of concept.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="ai-comparable-titles.html"><span>← Previous</span><strong>AI Comparable Title Selection</strong></a>
+            <a href="planning-data-hub.html"><span>Next →</span><strong>Planning Data Hub 2.0</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

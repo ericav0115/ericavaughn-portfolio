@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Cross-layer investigation of a production planning platform, tracing slowdowns from the app to the database to the jobs that feed it." />
+  <title>Planning Platform Reliability &amp; Performance | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 08 · Reliability · Production engineering</p>
+          <h1>Planning Platform Reliability &amp; Performance</h1>
+          <p class="case-deck">A cross-layer investigation of performance and reliability problems in a production planning platform, followed by a more resilient backend and processing design.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Senior data / platform engineer</strong></div>
+          <div><span>Scale</span><strong>Production SaaS planning platform</strong></div>
+          <div><span>Status</span><strong>Root causes identified; backend and processing design reworked.</strong></div>
+          <div><span>Stack</span><strong>Databricks · PostgreSQL · Supabase · Vercel · Sentry · Scheduled jobs</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>The symptom showed up in the app. The cause didn’t live there.</h2>
+            <p>A production planning platform was slowing down and failing intermittently. Users saw the problem in the application, but the causes ran across Databricks processing, PostgreSQL, serving tables, scheduled jobs, migrations, and deployment.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Traced performance and reliability issues across Databricks, Supabase/PostgreSQL, Vercel, Sentry, scheduled jobs, migrations, and serving tables.</li>
+              <li>Identified lock contention, severe dead-row and index bloat, and expensive rebuild patterns as the real drivers.</li>
+              <li>Reworked the backend and production architecture, shaping a processing design that avoids costly rebuilds and holds up under load.</li>
+              <li>Translated the findings for application, data, and business stakeholders so fixes could be prioritized together.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">Databricks processing<br><small>Scheduled jobs</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">Serving tables<br><small>PostgreSQL / Supabase: lock contention · bloat · rebuilds</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Application<br><small>Vercel</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Observability<br><small>Sentry</small></div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why investigate across layers?</h3><p>Fixing the layer where a symptom appears often just moves the problem. Following the request path end to end is how you find what actually changed.</p></div>
+              <div class="decision"><h3>Why treat bloat as a design problem?</h3><p>Dead rows and index bloat are usually a byproduct of how data gets written. Changing the write pattern prevents them from coming back.</p></div>
+              <div class="decision"><h3>Why lead with observability?</h3><p>You can’t prioritize what you can’t see. Error and timing signals turned anecdotes into evidence.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>3</strong><span>root causes surfaced</span></div>
+              <div><strong>6+</strong><span>layers traced end to end</span></div>
+              <div><strong>Resilient</strong><span>processing redesign</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Replaced guesswork with clear, evidence-backed root causes.</li>
+              <li>Gave the team a backend design that scales without rebuild storms.</li>
+              <li>Built shared understanding across application, data, and business teams.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Formalize freshness and performance SLOs, add alerting on lock waits and bloat, and make serving-table maintenance part of the deployment process.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="event-overlap-allocation.html"><span>← Previous</span><strong>Retail Event Overlap Allocation</strong></a>
+            <a href="account-conflict-detection.html"><span>Next →</span><strong>Post-Migration Account Conflict Detection</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Backend architecture for a multi-retailer shelf-intelligence ecosystem: inventory, planogram, product, and image feeds out to an AI vendor, availability metrics back into reporting." />
+  <title>Multi-Retailer On-Shelf Availability Integration | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 01 · Retail data platform · Integration</p>
+          <h1>Multi-Retailer On-Shelf Availability Integration</h1>
+          <p class="case-deck">Backend architecture for a multi-retailer shelf-intelligence ecosystem. Five feeds of inventory, planogram, product, and image data flow out to a third-party AI platform, and the AI-generated on-shelf-availability metrics flow back into enterprise reporting.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Data Engineer &amp; Integration Lead</strong></div>
+          <div><span>Scale</span><strong>Multiple retail partners · tens of millions of rows/day</strong></div>
+          <div><span>Status</span><strong>Active. Feeds landing; cross-workspace sharing approach recommended.</strong></div>
+          <div><span>Stack</span><strong>ADF · Azure SQL · SQL Server · Databricks · ADLS · Delta Sharing · RPA</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>One business question. Many disconnected signals.</h2>
+            <p>Store teams needed a reliable way to see whether products were actually on shelf, and whether shelf conditions matched the planned retail execution. The signals came from very different places: a cloud retail data platform, on-prem inventory snapshots, a data warehouse, planogram files, and product images.</p>
+            <p>Each feed had its own source and schedule (daily store inventory, weekly store-to-planogram ties, item end dates, cover images, and planogram PSA files), and some steps were still manual. On top of that, the processed data had to reach a second Databricks workspace in a different Azure region without making another copy.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Designed and documented the integration architecture across all five feeds, from source extraction through the vendor hand-off and the metric return path.</li>
+              <li>Investigated Delta Sharing between workspaces in two Azure regions. I found that the metastore region mismatch blocks native sharing, tested an open-sharing workaround, and recommended a shared ADLS path pointing at the post-merge Silver/Gold tables, with the egress-cost and migration trade-offs documented.</li>
+              <li>Optimized historical on-hand extraction queries and caught an unexpected <strong>136 million rows</strong> that needed investigating before extraction.</li>
+              <li>Set up a branch-based change process in the ADF development environment.</li>
+              <li>Worked with a retail partner on logging store exceptions, which gave the business reason codes for gaps between physical in-stock % and on-shelf availability %.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">Retail sources<br><small>Inventory · Planograms · Product · Images</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">ADF / SQL / RPA ingestion</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Azure landing zone<br><small>Blob / ADLS</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Databricks processing<br><small>Bronze → Silver → Gold</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">External AI shelf-intelligence platform</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">OSA metrics ingestion</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Shared ADLS path → reporting &amp; second-region workspace</div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why incremental processing?</h3><p>Daily retail volumes are big enough that repeated full reloads waste compute, run longer, and widen the blast radius when something fails. Incremental patterns keep each run focused on new or changed business data.</p></div>
+              <div class="decision"><h3>Why separate business-effective date from system date?</h3><p>Files arrive late. A pipeline keyed only to today’s system date can attach data to the wrong business period. Deriving the effective date from the source file keeps the business meaning intact when delivery timing slips.</p></div>
+              <div class="decision"><h3>Why isolate retailer-specific logic?</h3><p>Retailers differ in structure, cadence, identifiers, and exception rules. Keeping those differences at the edges stops the reusable core from turning into a pile of hard-coded branches.</p></div>
+              <div class="decision"><h3>Why a shared ADLS path instead of a copy?</h3><p>Native sharing was blocked by the region mismatch. Pointing the second workspace at the post-merge tables avoids duplicate storage and means consumers only ever read clean, processed data.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>5</strong><span>retail partners integrated</span></div>
+              <div><strong>10M+</strong><span>rows processed daily</span></div>
+              <div><strong>136M</strong><span>unexpected rows caught before extraction</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Gives major retail partners a consistent, repeatable data feed into the shelf-intelligence platform.</li>
+              <li>The sharing recommendation avoids duplicate storage, and the second workspace reads only processed data.</li>
+              <li>Reason-code logging gives the business a way to explain store-level performance gaps.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Automate the cover-image feed (currently desktop RPA) and implement the shared ADLS approach. At 10× scale I would move the highest-frequency feeds to event-driven ingestion, add data contracts with automated schema checks, onboard new retailers through metadata and configuration, and put freshness and quality metrics into a single operational dashboard with alerting.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="legacy-portal-stabilization.html"><span>← Previous</span><strong>Legacy Planning Portal Stabilization</strong></a>
+            <a href="sales-datamart-explorer.html"><span>Next →</span><strong>Enterprise Sales Datamart Explorer</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

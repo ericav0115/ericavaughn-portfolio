@@ -1,0 +1,13 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local-only originals (full-size photos aren't used by the site)
+assets/images/originals/
+
+# Misc
+node_modules/
+*.log
+.env

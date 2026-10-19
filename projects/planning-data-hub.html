@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Custom API-driven web app replacing a low-code planning portal, with faster grids, optimistic locking, auditable snapshots, and no vendor lock-in." />
+  <title>Planning Data Hub 2.0 | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 05 · Enterprise application · APIs</p>
+          <h1>Planning Data Hub 2.0</h1>
+          <p class="case-deck">A custom planning web app that replaces a low-code portal, built for demand planners and product managers. It brings faster grids, safe concurrent editing, auditable snapshots, and no vendor lock-in.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Architect &amp; developer</strong></div>
+          <div><span>Scale</span><strong>Nine data pages + KPI dashboard</strong></div>
+          <div><span>Status</span><strong>Running locally; awaiting identity and hosting provisioning.</strong></div>
+          <div><span>Stack</span><strong>FastAPI · HTMX · AG Grid · Jinja2 · Chart.js · SQLite · Dataverse OData API · Entra ID · Azure App Service</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>Two planners, one row, no protection.</h2>
+            <p>Planners managed new-product forecasts in a low-code portal on top of Dataverse. It was hard to change safely, limited in how grids and filters could work, and offered no protection when two people edited the same row at the same time.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Evaluated Streamlit, Retool, Budibase, and Cloudflare, then chose a custom stack to avoid vendor lock-in and keep hosting in-house.</li>
+              <li>Built nine data pages (titles, forecast, comps, history, controls, and planner/product-manager views) plus a home KPI dashboard.</li>
+              <li>Added optimistic locking so concurrent edits can’t silently overwrite each other, and a snapshot system that writes locked rows to their own table.</li>
+              <li>Built a collapsible filter panel, multi-value paste filtering, saved personal views, and inline editing limited to the pages where it belongs.</li>
+              <li>Matched the look of the rest of the internal tool suite, captured the team’s feature wishlist, and drafted the IT provisioning request.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">Browser<br><small>HTMX + AG Grid</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">FastAPI + Jinja2<br><small>Server-rendered pages</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">Optimistic locking &amp; snapshot service</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Dataverse OData API</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Entra ID sign-in · Azure App Service</div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why custom over low-code platforms?</h3><p>Every platform I evaluated traded one limitation for another, plus lock-in. A lean custom stack gave full control over grids, filters, and concurrency, with hosting kept in-house.</p></div>
+              <div class="decision"><h3>Why HTMX?</h3><p>Server-rendered HTML with targeted swaps keeps the app fast and simple, with no heavy front-end build for a small team to maintain.</p></div>
+              <div class="decision"><h3>Why optimistic locking?</h3><p>Conflicts are rare but costly. Optimistic locking catches them at save time without making users hold locks while they think.</p></div>
+              <div class="decision"><h3>Why limit inline editing?</h3><p>Editing everywhere is a footgun. Scoping it to the pages that need it protects the data users should only read.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>9</strong><span>data pages + KPI dashboard</span></div>
+              <div><strong>0</strong><span>silent overwrites by design</span></div>
+              <div><strong>Auditable</strong><span>snapshots of locked rows</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Protects forecast data from conflicting edits and keeps an auditable record of locked rows.</li>
+              <li>Gives planners a faster grid with better filtering and saved views.</li>
+              <li>No vendor lock-in, and a consistent look across the internal tool suite.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Wire in Entra ID sign-in, deploy to Azure App Service, create the locked-rows table, and confirm KPI definitions with users.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="sales-curve-planner.html"><span>← Previous</span><strong>New Product Sales Curve Planner</strong></a>
+            <a href="ai-learning-platform.html"><span>Next →</span><strong>A.I. University</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

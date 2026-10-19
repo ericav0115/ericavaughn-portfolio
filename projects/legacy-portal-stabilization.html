@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Owned and stabilized a low-code forecasting portal: fixed UX bugs, root-caused forecast errors, and laid the groundwork for its replacement." />
+  <title>Legacy Planning Portal Stabilization | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 12 · Production support · Low-code</p>
+          <h1>Legacy Planning Portal Stabilization</h1>
+          <p class="case-deck">Owning and stabilizing the production forecasting portal planners use every day: fixing UX bugs, root-causing forecast errors, and setting up the requirements for its replacement.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Developer &amp; technical owner</strong></div>
+          <div><span>Scale</span><strong>Production tool for planners &amp; product managers</strong></div>
+          <div><span>Status</span><strong>In production; being replaced by Planning Data Hub 2.0.</strong></div>
+          <div><span>Stack</span><strong>Power Pages · Power Apps (managed solutions) · Dataverse · JavaScript · CSS · Bootstrap · Power Platform CLI · XrmToolBox</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>Bugs users could see, and errors they couldn’t.</h2>
+            <p>Planners and product managers used a low-code portal to manage new-product forecasts. They ran into layout and usability bugs, forecasts were sometimes wrong after item re-runs, and production had drifted from development, which made safe changes difficult.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Fixed front-end issues: sticky-column gaps, a date picker trapped behind sticky columns, and calendar date overlap.</li>
+              <li>Added a product cover image popup that appears when users hover over a UPC.</li>
+              <li>Root-caused a scaling error: re-running a reference item cleared the original 10-week forecast, and users didn’t know to re-enter it. I documented the cause and proposed an in-screen reminder, with an automated fix plus row locking as the alternative.</li>
+              <li>Investigated an intermittent forecast overstatement that corrected itself the next day.</li>
+              <li>Diagnosed prod-to-dev drift in the managed solution, evaluated tooling options, and recommended a governed dev-to-prod deployment process.</li>
+              <li>Kept product managers informed during connection and refresh delays.</li>
+            </ul>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">03 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why document the root cause before automating?</h3><p>A clear business rule fixes the problem today. Automation and locking can follow once everyone agrees on the behavior.</p></div>
+              <div class="decision"><h3>Why a governed deployment process?</h3><p>Drift between environments makes every change a gamble. A defined dev-to-prod path makes changes safe again.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">04 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>3</strong><span>UX defects fixed</span></div>
+              <div><strong>1</strong><span>root-caused forecast error</span></div>
+              <div><strong>2.0</strong><span>requirements captured</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Made the tool easier to use, with faster title recognition through cover images.</li>
+              <li>Explained a forecasting error and set a clear business rule to prevent it.</li>
+              <li>Laid the groundwork, and the requirements, for the <a href="planning-data-hub.html">Planning Data Hub 2.0</a> rebuild.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">05 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Continue support and monitoring while users move to Planning Data Hub 2.0.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="inventory-decision-review.html"><span>← Previous</span><strong>ML Inventory Decision Review App</strong></a>
+            <a href="on-shelf-availability.html"><span>Next →</span><strong>Multi-Retailer On-Shelf Availability Integration</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

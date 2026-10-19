@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Found and sized the store account-number conflicts behind pipeline failures after an ERP migration, so fixes could be prioritized." />
+  <title>Post-Migration Account Conflict Detection | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 09 · Data quality · ERP migration</p>
+          <h1>Post-Migration Account Conflict Detection</h1>
+          <p class="case-deck">Detecting and sizing the store account-number conflicts that started breaking pipelines after an ERP migration, so the team could fix them in priority order.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Data engineer</strong></div>
+          <div><span>Scale</span><strong>Curated set of Silver-layer tables</strong></div>
+          <div><span>Status</span><strong>Detection and impact analysis built; remediation strategy with the team.</strong></div>
+          <div><span>Stack</span><strong>Databricks SQL · PySpark · Delta Lake (Silver layer) · ERP master data</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>Same store. Two account numbers. Broken joins.</h2>
+            <p>After a move to a new ERP, some data pipelines started failing. When an inactive store reactivated, it could end up with two account numbers: an old system-generated one and the official new one.</p>
+            <p>Silver-layer tables still carried the old number while the master list had the new one, which broke joins and caused pipeline failures plus missing or duplicated records.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Built Phase 1, a SQL script that finds every agency/chain/store combination with conflicting account numbers and exposes them in a conflicts view.</li>
+              <li>Built Phase 2, a PySpark script that scans a controlled list of Silver tables and writes the size of the impact to a summary table for team review.</li>
+              <li>Investigated duplicate records in a POS detail table tied to the account-correction process, narrowed the cause to MERGE behavior with duplicate IDs, and confirmed it with diagnostic queries.</li>
+              <li>Kept the table list manually maintained so the team has full control over what gets checked.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">ERP master accounts + Silver tables</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Phase 1: conflict detection<br><small>SQL view</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Phase 2: impact scan<br><small>PySpark · curated table list</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">Impact summary table</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Team review → remediation</div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why two phases?</h3><p>First prove the conflicts exist and list them, then measure how far they reach. Each phase answers one question cleanly.</p></div>
+              <div class="decision"><h3>Why a manually curated table list?</h3><p>Automatic discovery is convenient but opaque. A curated list keeps the team in control of scope and cost.</p></div>
+              <div class="decision"><h3>Why chase the MERGE duplicates?</h3><p>Duplicates caused by the correction process itself would quietly undo the fix. Finding them early protected every downstream consumer.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>2</strong><span>phase detection + sizing</span></div>
+              <div><strong>Concrete</strong><span>reviewable conflict list</span></div>
+              <div><strong>Upstream</strong><span>fix for downstream joins</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Turned unexplained pipeline failures into a concrete, reviewable list of conflicts.</li>
+              <li>Shows how far each conflict reaches across Silver tables, so remediation can be prioritized.</li>
+              <li>Directly informed downstream fixes, including a join correction in the <a href="sales-datamart-explorer.html">Sales Datamart Explorer</a>.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Review impact results with the team, agree on a remediation strategy, and put prevention in place for future reactivations.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="platform-reliability.html"><span>← Previous</span><strong>Planning Platform Reliability &amp; Performance</strong></a>
+            <a href="store-on-hand-pipeline.html"><span>Next →</span><strong>Store-Level On-Hand Inventory Pipeline</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>
