@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Restored a floor-facing warehouse dashboard after a failed integration: traced the cascade, cleaned duplicate data, and recovered 14,033 of 14,033 valid records." />
+  <title>Real-Time Warehouse Operations Recovery | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 04 · Incident response · Production data</p>
+          <h1>Real-Time Warehouse Operations Recovery</h1>
+          <p class="case-deck">A floor-facing dashboard showing wave progress, zone performance, and operating status went stale after an upstream integration failed. I traced the cascade end to end and restored trustworthy data without deploying any application code.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Production data engineer &amp; incident investigator</strong></div>
+          <div><span>Scale</span><strong>14,033 records · six operating waves</strong></div>
+          <div><span>Status</span><strong>Production recovery complete; preventive recommendations open.</strong></div>
+          <div><span>Stack</span><strong>Azure Functions · Azure SQL · Synapse pipelines · Blob Storage · Dynamics 365 · Logic Apps · Key Vault · SignalR</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>One expired credential. A cascade of stale data.</h2>
+            <p>The dashboard combines enterprise order feeds with warehouse pick activity so the floor can see wave progress and zone performance in real time.</p>
+            <p>An expired integration credential stopped the upstream exports. A coupled trigger then let files pile up, and when they replayed they created duplicate staging rows and stale operational state. The floor was looking at numbers it couldn’t trust.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Traced the failure across API credentials, integration connections, storage events, pipelines, SQL staging, and scheduled processing.</li>
+              <li>Preserved the affected data, isolated the valid current dataset, and removed duplicate staging records in controlled batches.</li>
+              <li>Restored clean current-day processing without deploying application code, and validated downstream wave creation.</li>
+              <li>Documented prevention measures: independent triggers, idempotent ingestion, file lifecycle controls, and credential-expiration alerts.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">ERP order feeds<br><small>Logic Apps · Key Vault credentials</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Blob Storage<br><small>Storage-event triggers</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Synapse pipelines + Azure Functions</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">SQL staging<br><small>Duplicates isolated &amp; removed in batches</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Wave &amp; zone processing</div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Real-time floor dashboard<br><small>SignalR</small></div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why preserve before cleaning?</h3><p>In an incident, the evidence is the data. Keeping a copy of everything affected meant every cleanup step could be checked and reversed.</p></div>
+              <div class="decision"><h3>Why controlled batches?</h3><p>Deleting duplicates in one pass against a live operational table risks locks and mistakes. Batches kept the floor running and every step verifiable.</p></div>
+              <div class="decision"><h3>Why recover without a code deploy?</h3><p>Shipping code mid-incident adds new risk. Recovering through data and configuration got operations back fastest and safest.</p></div>
+              <div class="decision"><h3>Why look past the expired credential?</h3><p>The credential started it, but the coupled trigger and non-idempotent ingestion turned a pause into corruption. Those are the real fixes.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>14,033</strong><span>of 14,033 valid records restored</span></div>
+              <div><strong>6 / 6</strong><span>expected operating waves recovered</span></div>
+              <div><strong>0</strong><span>application code deploys needed</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Restored trustworthy, current-day warehouse visibility for floor operations.</li>
+              <li>Identified architectural failure modes beyond the initial expired credential.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Prioritize durable safeguards, then validate restart and replay behavior under abnormal source volumes.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="ai-comparable-titles.html"><span>← Previous</span><strong>AI Comparable Title Selection</strong></a>
+            <a href="sales-curve-planner.html"><span>Next →</span><strong>New Product Sales Curve Planner</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

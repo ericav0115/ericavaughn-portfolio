@@ -6,7 +6,7 @@ Plain HTML, CSS, and a little JavaScript. No build step, no dependencies.
 ## Structure
 
 ```
-index.html                  Home: hero, work (12 case studies, filterable), about, speaking, ideas, contact
+index.html                  Home: hero, work (18 case studies, filterable), about, speaking, ideas, contact
 projects/*.html             One page per case study
 case-study-template.html    Blank template for new case studies (noindex)
 styles.css                  Visual system + responsive styles
@@ -38,7 +38,7 @@ and set the output directory to the repo root.
 1. Copy an existing page in `projects/` (or `case-study-template.html`) to `projects/your-project.html`.
 2. Fix relative paths if you started from the template (`../styles.css`, `../index.html`).
 3. Add a card to the `<!-- PROJECTS -->` block in `index.html`. Set `data-cats` to any of
-   `platform`, `apps`, `ai`, `analytics` so the filters pick it up.
+   `platform`, `apps`, `ai`, `analytics`, `ops` so the filters pick it up.
 4. Update the previous/next links at the bottom of the neighboring project pages.
 
 ## Confidentiality

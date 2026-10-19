@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Cross-layer investigation of a production planning platform, tracing slowdowns from the app to the database to the jobs that feed it." />
+  <meta name="description" content="Diagnosed slow pages and intermittent outages in a production demand-planning app, from autovacuum lag and index bloat to the reads that hit them." />
   <title>Planning Platform Reliability &amp; Performance | Erica Vaughn</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../styles.css" />
@@ -21,15 +21,15 @@
     <section class="case-hero section">
       <div class="shell case-hero-grid">
         <div>
-          <p class="eyebrow">Case study 08 · Reliability · Production engineering</p>
+          <p class="eyebrow">Case study 09 · Reliability · Production engineering</p>
           <h1>Planning Platform Reliability &amp; Performance</h1>
-          <p class="case-deck">A cross-layer investigation of performance and reliability problems in a production planning platform, followed by a more resilient backend and processing design.</p>
+          <p class="case-deck">A collaborative demand-planning app managing events, demand, and inventory views slowed down and went intermittently unavailable as usage grew. I traced the problem across the app, the database, and the jobs that feed it.</p>
         </div>
         <aside class="case-meta">
-          <div><span>Role</span><strong>Senior data / platform engineer</strong></div>
-          <div><span>Scale</span><strong>Production SaaS planning platform</strong></div>
-          <div><span>Status</span><strong>Root causes identified; backend and processing design reworked.</strong></div>
-          <div><span>Stack</span><strong>Databricks · PostgreSQL · Supabase · Vercel · Sentry · Scheduled jobs</strong></div>
+          <div><span>Role</span><strong>Data engineer &amp; production troubleshooter</strong></div>
+          <div><span>Scale</span><strong>Production planning app · growing usage</strong></div>
+          <div><span>Status</span><strong>Root causes documented; remediation and observability ongoing.</strong></div>
+          <div><span>Stack</span><strong>PostgreSQL · Supabase · SQL · Index analysis · Autovacuum · Databricks · Vercel · Sentry</strong></div>
         </aside>
       </div>
     </section>
@@ -50,17 +50,19 @@
           <section id="challenge">
             <p class="eyebrow">01 · The challenge</p>
             <h2>The symptom showed up in the app. The cause didn’t live there.</h2>
-            <p>A production planning platform was slowing down and failing intermittently. Users saw the problem in the application, but the causes ran across Databricks processing, PostgreSQL, serving tables, scheduled jobs, migrations, and deployment.</p>
+            <p>Users were hitting slow pages and intermittent outages. Meanwhile, table growth and lagging database maintenance made it hard to tell application symptoms apart from root causes.</p>
+            <p>The causes ran across Databricks processing, PostgreSQL serving tables, scheduled jobs, migrations, and deployment.</p>
           </section>
 
           <section id="role">
             <p class="eyebrow">02 · What I did</p>
             <h2>What I owned and built.</h2>
             <ul class="did-list">
-              <li>Traced performance and reliability issues across Databricks, Supabase/PostgreSQL, Vercel, Sentry, scheduled jobs, migrations, and serving tables.</li>
-              <li>Identified lock contention, severe dead-row and index bloat, and expensive rebuild patterns as the real drivers.</li>
-              <li>Reworked the backend and production architecture, shaping a processing design that avoids costly rebuilds and holds up under load.</li>
-              <li>Translated the findings for application, data, and business stakeholders so fixes could be prioritized together.</li>
+              <li>Investigated production latency and service errors across the web application and the PostgreSQL database.</li>
+              <li>Analyzed dead tuples, delayed autovacuum, and index bloat, and isolated the most affected demand and history tables.</li>
+              <li>Traced the read paths for event editing, the timeline, and demand history to show where query and materialization changes would help.</li>
+              <li>Identified lock contention and expensive rebuild patterns in the processing that feeds the serving tables, and shaped a more resilient design.</li>
+              <li>Separated short-term incident recovery from longer-term monitoring, query optimization, and data-model changes.</li>
             </ul>
           </section>
 
@@ -70,7 +72,9 @@
             <div class="architecture">
               <div class="arch-node">Databricks processing<br><small>Scheduled jobs</small></div>
               <div class="arch-arrow" aria-hidden="true">↓</div>
-              <div class="arch-node accent-node">Serving tables<br><small>PostgreSQL / Supabase: lock contention · bloat · rebuilds</small></div>
+              <div class="arch-node accent-node">Serving tables<br><small>PostgreSQL: dead tuples · autovacuum lag · index bloat</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Read paths<br><small>Event editing · timeline · demand history</small></div>
               <div class="arch-arrow" aria-hidden="true">↓</div>
               <div class="arch-node">Application<br><small>Vercel</small></div>
               <div class="arch-arrow" aria-hidden="true">↓</div>
@@ -92,13 +96,13 @@
             <p class="eyebrow">05 · Impact</p>
             <h2>What changed because of the work.</h2>
             <div class="impact-grid">
-              <div><strong>3</strong><span>root causes surfaced</span></div>
+              <div><strong>3</strong><span>root-cause areas isolated</span></div>
               <div><strong>6+</strong><span>layers traced end to end</span></div>
-              <div><strong>Resilient</strong><span>processing redesign</span></div>
+              <div><strong>2-track</strong><span>recovery vs. long-term plan</span></div>
             </div>
             <ul class="did-list">
-              <li>Replaced guesswork with clear, evidence-backed root causes.</li>
-              <li>Gave the team a backend design that scales without rebuild storms.</li>
+              <li>Turned a vague performance incident into specific, testable hypotheses about database maintenance and application reads.</li>
+              <li>Set clear technical priorities for a more reliable planning workflow.</li>
               <li>Built shared understanding across application, data, and business teams.</li>
             </ul>
           </section>
@@ -106,7 +110,7 @@
           <section id="next">
             <p class="eyebrow">06 · What’s next</p>
             <h2>Where it goes from here.</h2>
-            <p>Formalize freshness and performance SLOs, add alerting on lock waits and bloat, and make serving-table maintenance part of the deployment process.</p>
+            <p>Implement and validate the agreed remediation, track table health, and measure user-facing latency after the changes.</p>
           </section>
 
           <p class="template-note">
@@ -116,7 +120,7 @@
 
           <nav class="project-pager" aria-label="More projects">
             <a href="event-overlap-allocation.html"><span>← Previous</span><strong>Retail Event Overlap Allocation</strong></a>
-            <a href="account-conflict-detection.html"><span>Next →</span><strong>Post-Migration Account Conflict Detection</strong></a>
+            <a href="master-data-consolidation.html"><span>Next →</span><strong>Enterprise Master Data Consolidation</strong></a>
           </nav>
         </article>
       </div>

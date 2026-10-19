@@ -83,7 +83,7 @@
           <p class="eyebrow">Selected work</p>
           <h2>Complex systems. Clear outcomes.</h2>
           <p>
-            Twelve case studies across data platforms, applications, AI, and analytics. Each one is a sanitized
+            Eighteen case studies across data platforms, applications, AI, analytics, and reliability. Each one is a sanitized
             reconstruction: no organization names, proprietary code, client data, or confidential architecture.
           </p>
         </div>
@@ -95,6 +95,7 @@
           <button type="button" class="filter-chip" data-filter="apps" aria-pressed="false">Applications</button>
           <button type="button" class="filter-chip" data-filter="ai" aria-pressed="false">AI &amp; ML</button>
           <button type="button" class="filter-chip" data-filter="analytics" aria-pressed="false">Analytics &amp; methods</button>
+          <button type="button" class="filter-chip" data-filter="ops" aria-pressed="false">Reliability &amp; security</button>
         </div>
 
         <div class="project-grid">
@@ -127,8 +128,17 @@
             <span class="text-link">Read case study <span>→</span></span>
           </article>
 
-          <article class="project-card reveal" data-cats="analytics apps">
+          <article class="project-card reveal" data-cats="platform ops">
             <div class="project-index">04</div>
+            <p class="project-kicker">Incident response · Production data</p>
+            <h3><a href="projects/warehouse-operations-recovery.html">Real-Time Warehouse Operations Recovery</a></h3>
+            <p>Restored a floor-facing warehouse dashboard after a failed integration: traced the cascade, cleaned duplicate data, and recovered 14,033 of 14,033 valid records.</p>
+            <ul class="tag-list"><li>Azure Functions</li><li>Synapse</li><li>Azure SQL</li><li>Logic Apps</li><li>Key Vault</li></ul>
+            <span class="text-link">Read case study <span>→</span></span>
+          </article>
+
+          <article class="project-card reveal" data-cats="analytics apps">
+            <div class="project-index">05</div>
             <p class="project-kicker">Forecasting · Data app</p>
             <h3><a href="projects/sales-curve-planner.html">New Product Sales Curve Planner</a></h3>
             <p>Automated 26- and 52-week launch curves with a governed curve editor, replacing a manual hours-to-days process.</p>
@@ -137,7 +147,7 @@
           </article>
 
           <article class="project-card reveal" data-cats="apps">
-            <div class="project-index">05</div>
+            <div class="project-index">06</div>
             <p class="project-kicker">Enterprise application · APIs</p>
             <h3><a href="projects/planning-data-hub.html">Planning Data Hub 2.0</a></h3>
             <p>Custom API-driven web app replacing a low-code planning portal, with faster grids, optimistic locking, auditable snapshots, and no vendor lock-in.</p>
@@ -146,7 +156,7 @@
           </article>
 
           <article class="project-card reveal" data-cats="ai apps">
-            <div class="project-index">06</div>
+            <div class="project-index">07</div>
             <p class="project-kicker">AI adoption · Learning platform</p>
             <h3><a href="projects/ai-learning-platform.html">A.I. University</a></h3>
             <p>Internal AI learning platform driving Copilot adoption from the C-suite to every license holder, with courses, a readiness assessment, and progress tracking.</p>
@@ -155,7 +165,7 @@
           </article>
 
           <article class="project-card reveal" data-cats="analytics">
-            <div class="project-index">07</div>
+            <div class="project-index">08</div>
             <p class="project-kicker">Analytics · Methodology</p>
             <h3><a href="projects/event-overlap-allocation.html">Retail Event Overlap Allocation</a></h3>
             <p>A lift-weighted allocation method that stopped overlapping retail events from inflating POS units, where 9 real units had been showing up as 63.</p>
@@ -163,17 +173,44 @@
             <span class="text-link">Read case study <span>→</span></span>
           </article>
 
-          <article class="project-card reveal" data-cats="platform">
-            <div class="project-index">08</div>
+          <article class="project-card reveal" data-cats="platform ops">
+            <div class="project-index">09</div>
             <p class="project-kicker">Reliability · Production engineering</p>
             <h3><a href="projects/platform-reliability.html">Planning Platform Reliability &amp; Performance</a></h3>
-            <p>Cross-layer investigation of a production planning platform, tracing slowdowns from the app to the database to the jobs that feed it.</p>
+            <p>Diagnosed slow pages and intermittent outages in a production demand-planning app, from autovacuum lag and index bloat to the reads that hit them.</p>
             <ul class="tag-list"><li>PostgreSQL</li><li>Supabase</li><li>Vercel</li><li>Sentry</li><li>Databricks</li></ul>
             <span class="text-link">Read case study <span>→</span></span>
           </article>
 
+          <article class="project-card reveal" data-cats="platform">
+            <div class="project-index">10</div>
+            <p class="project-kicker">Data architecture · Master data</p>
+            <h3><a href="projects/master-data-consolidation.html">Enterprise Master Data Consolidation</a></h3>
+            <p>Bringing operational and analytical systems into line around consistent business entities, with canonical IDs, mapping rules, and visible exceptions.</p>
+            <ul class="tag-list"><li>Dynamics 365</li><li>ADF</li><li>Databricks</li><li>Delta Lake</li><li>Azure SQL</li></ul>
+            <span class="text-link">Read case study <span>→</span></span>
+          </article>
+
+          <article class="project-card reveal" data-cats="platform">
+            <div class="project-index">11</div>
+            <p class="project-kicker">Integration · Reusable framework</p>
+            <h3><a href="projects/reusable-data-integration.html">Reusable Enterprise Data Integration</a></h3>
+            <p>A bidirectional pattern for syncing business-app data with the lakehouse, so new datasets connect without rebuilding one-off interfaces.</p>
+            <ul class="tag-list"><li>Dataverse APIs</li><li>Databricks</li><li>Python</li><li>SQL</li><li>OAuth</li></ul>
+            <span class="text-link">Read case study <span>→</span></span>
+          </article>
+
+          <article class="project-card reveal" data-cats="platform ops">
+            <div class="project-index">12</div>
+            <p class="project-kicker">Platform · Security &amp; DevOps</p>
+            <h3><a href="projects/cloud-identity-automation.html">Cloud Identity &amp; Deployment Automation</a></h3>
+            <p>Moving data-platform automation off personal credentials and onto service principals and federated identity, so jobs belong to the team.</p>
+            <ul class="tag-list"><li>Entra ID</li><li>Service principals</li><li>Databricks SDK</li><li>Terraform</li><li>OIDC</li></ul>
+            <span class="text-link">Read case study <span>→</span></span>
+          </article>
+
           <article class="project-card reveal" data-cats="platform analytics">
-            <div class="project-index">09</div>
+            <div class="project-index">13</div>
             <p class="project-kicker">Data quality · ERP migration</p>
             <h3><a href="projects/account-conflict-detection.html">Post-Migration Account Conflict Detection</a></h3>
             <p>Found and sized the store account-number conflicts behind pipeline failures after an ERP migration, so fixes could be prioritized.</p>
@@ -182,7 +219,7 @@
           </article>
 
           <article class="project-card reveal" data-cats="platform">
-            <div class="project-index">10</div>
+            <div class="project-index">14</div>
             <p class="project-kicker">Data engineering · Pipelines</p>
             <h3><a href="projects/store-on-hand-pipeline.html">Store-Level On-Hand Inventory Pipeline</a></h3>
             <p>Store-level inventory for a major retailer’s live items, after solving an identifier mismatch that had queries running for minutes with no results.</p>
@@ -190,8 +227,26 @@
             <span class="text-link">Read case study <span>→</span></span>
           </article>
 
-          <article class="project-card reveal" data-cats="ai apps">
-            <div class="project-index">11</div>
+          <article class="project-card reveal" data-cats="platform">
+            <div class="project-index">15</div>
+            <p class="project-kicker">Orchestration · Idempotency</p>
+            <h3><a href="projects/pos-ingestion-orchestration.html">Retail POS Ingestion Orchestration</a></h3>
+            <p>A Logic Apps workflow with a date-specific control marker that stops repeated source notifications from triggering duplicate loads.</p>
+            <ul class="tag-list"><li>Logic Apps</li><li>ADF</li><li>Blob Storage</li><li>JSON</li></ul>
+            <span class="text-link">Read case study <span>→</span></span>
+          </article>
+
+          <article class="project-card reveal" data-cats="analytics">
+            <div class="project-index">16</div>
+            <p class="project-kicker">Data product · SQL</p>
+            <h3><a href="projects/service-hours-data-product.html">Retail Service Hours Data Product</a></h3>
+            <p>Weekly store-level service hours with reliable Sunday–Saturday boundaries, one row per store-week, and a six-month backfill.</p>
+            <ul class="tag-list"><li>T-SQL</li><li>SQL Server</li><li>Azure pipelines</li></ul>
+            <span class="text-link">Read case study <span>→</span></span>
+          </article>
+
+          <article class="project-card reveal" data-cats="ai apps ops">
+            <div class="project-index">17</div>
             <p class="project-kicker">MLOps · Security</p>
             <h3><a href="projects/inventory-decision-review.html">ML Inventory Decision Review App</a></h3>
             <p>Human-in-the-loop app for approving ML-predicted inventory decisions, plus the least-privilege access pattern that made it secure.</p>
@@ -200,7 +255,7 @@
           </article>
 
           <article class="project-card reveal" data-cats="apps">
-            <div class="project-index">12</div>
+            <div class="project-index">18</div>
             <p class="project-kicker">Production support · Low-code</p>
             <h3><a href="projects/legacy-portal-stabilization.html">Legacy Planning Portal Stabilization</a></h3>
             <p>Owned and stabilized a low-code forecasting portal: fixed UX bugs, root-caused forecast errors, and laid the groundwork for its replacement.</p>

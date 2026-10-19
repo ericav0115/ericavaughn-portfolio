@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Moving data-platform automation off personal credentials and onto service principals and federated identity, so jobs belong to the team." />
+  <title>Cloud Identity &amp; Deployment Automation | Erica Vaughn</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="../index.html"><span class="brand-mark">EV</span><span class="brand-name">Erica Vaughn</span></a>
+      <nav class="site-nav case-nav"><a href="../index.html#work">← Back to work</a></nav>
+    </div>
+  </header>
+
+  <main id="main" class="case-main">
+    <section class="case-hero section">
+      <div class="shell case-hero-grid">
+        <div>
+          <p class="eyebrow">Case study 12 · Platform · Security &amp; DevOps</p>
+          <h1>Cloud Identity &amp; Deployment Automation</h1>
+          <p class="case-deck">A platform effort to change how automated analytics workloads authenticate, deploy, and run. The goal is team-owned automation instead of jobs that depend on one person’s credentials.</p>
+        </div>
+        <aside class="case-meta">
+          <div><span>Role</span><strong>Data engineer &amp; platform automation</strong></div>
+          <div><span>Scale</span><strong>Azure · Databricks · source control</strong></div>
+          <div><span>Status</span><strong>Ownership migration design and implementation in progress.</strong></div>
+          <div><span>Stack</span><strong>Azure Entra ID · App registrations · Service principals · GitHub · Databricks SDK · Terraform · OIDC</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="shell case-body">
+        <nav class="case-sidebar" aria-label="In this case study">
+          <p class="eyebrow">In this case study</p>
+          <a href="#challenge">The challenge</a>
+          <a href="#role">What I did</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#decisions">Key decisions</a>
+          <a href="#impact">Impact</a>
+          <a href="#next">What’s next</a>
+        </nav>
+
+        <article class="case-content">
+          <section id="challenge">
+            <p class="eyebrow">01 · The challenge</p>
+            <h2>What happens to the pipeline when its owner leaves?</h2>
+            <p>Personal access tokens and user-owned scheduled jobs are an operational risk. When someone’s permissions change or they leave, the automation tied to them can quietly break.</p>
+          </section>
+
+          <section id="role">
+            <p class="eyebrow">02 · What I did</p>
+            <h2>What I owned and built.</h2>
+            <ul class="did-list">
+              <li>Mapped service-principal authentication paths across Azure, Databricks, and source-control workflows.</li>
+              <li>Worked through job and pipeline ownership changes, and identified the limits around immutable creator metadata.</li>
+              <li>Reviewed Git credential and federated identity (OIDC) options for automated deployment and runtime access.</li>
+              <li>Identified secret-rotation and least-privilege considerations for application credentials.</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <p class="eyebrow">03 · Architecture</p>
+            <h2>How it fits together.</h2>
+            <div class="architecture">
+              <div class="arch-node">GitHub / CI<br><small>Federated identity (OIDC)</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node accent-node">Service principals<br><small>Entra ID app registrations</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Databricks jobs &amp; pipelines<br><small>Team-owned · run-as identity</small></div>
+              <div class="arch-arrow" aria-hidden="true">↓</div>
+              <div class="arch-node">Azure resources<br><small>Least-privilege access</small></div>
+            </div>
+          </section>
+
+          <section id="decisions">
+            <p class="eyebrow">04 · Key decisions</p>
+            <h2>The judgment behind the build.</h2>
+            <div class="decision-grid">
+              <div class="decision"><h3>Why federated identity over stored secrets?</h3><p>Short-lived tokens issued at run time remove a whole class of leaked or expired secrets.</p></div>
+              <div class="decision"><h3>Why map constraints before migrating?</h3><p>Some metadata, like a job’s creator, can’t be changed. Knowing that up front avoids breaking production jobs mid-migration.</p></div>
+              <div class="decision"><h3>Why least privilege?</h3><p>A service identity that can do everything is just a shared password with extra steps. Scoping access limits the blast radius.</p></div>
+            </div>
+          </section>
+
+          <section id="impact">
+            <p class="eyebrow">05 · Impact</p>
+            <h2>What changed because of the work.</h2>
+            <div class="impact-grid">
+              <div><strong>0</strong><span>personal tokens as the goal</span></div>
+              <div><strong>Team-owned</strong><span>automation</span></div>
+              <div><strong>Least</strong><span>privilege by design</span></div>
+            </div>
+            <ul class="did-list">
+              <li>Sets a path toward automation the team owns rather than any one individual.</li>
+              <li>Clarified migration constraints before anyone touched production workloads.</li>
+            </ul>
+          </section>
+
+          <section id="next">
+            <p class="eyebrow">06 · What’s next</p>
+            <h2>Where it goes from here.</h2>
+            <p>Complete the remaining ownership changes, validate unattended runs, and codify credential-rotation procedures.</p>
+          </section>
+
+          <p class="template-note">
+            This case study is a sanitized reconstruction. Organization names, proprietary code, data, and internal
+            schemas are intentionally left out.
+          </p>
+
+          <nav class="project-pager" aria-label="More projects">
+            <a href="reusable-data-integration.html"><span>← Previous</span><strong>Reusable Enterprise Data Integration</strong></a>
+            <a href="account-conflict-detection.html"><span>Next →</span><strong>Post-Migration Account Conflict Detection</strong></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div><strong>Erica Vaughn</strong><p>Data · Platforms · Architecture · Leadership</p></div>
+      <a class="text-link" href="../index.html#contact">Let’s connect <span>→</span></a>
+    </div>
+  </footer>
+</body>
+</html>
